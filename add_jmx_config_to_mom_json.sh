@@ -56,13 +56,13 @@ function check_jq_is_available() {
 
 
 # Come up with a name for our new json file based on the current name;
-function come-up-with-new-mom-json-filename() {
-	if [ $( echo "${MOM_JSON_FILE}" | egrep -c -i '.json$' ) -gt 0  ];then 
+function get-new-mom-json-filename() {
+	if [ $( echo "${1}" | egrep -c -i '.json$' ) -gt 0  ];then 
 	  # Change filename from <something>.JSON to <something>-jmx.JSON;
-	  NEW_MOM_JSON_FILE=$( echo "${MOM_JSON_FILE}" | sed -e 's|[.][jJ][sS][oO][nN]|-jmx.JSON|' )
+	  NEW_MOM_JSON_FILE=$( echo "${1}" | sed -e 's|[.][jJ][sS][oO][nN]|-jmx.JSON|' )
 	else 
 	  # Change filename from <something>      to <something>-jmx.JSON;
-	  NEW_MOM_JSON_FILE=$( echo ${MOM_JSON_FILE} | sed -e 's|$|-jmx.JSON|' )
+	  NEW_MOM_JSON_FILE=$( echo ${1} | sed -e 's|$|-jmx.JSON|' )
 	fi
 }
 
@@ -140,15 +140,15 @@ function change-dcos-service-name() {
 NEW_MOM_JSON_FILE=''
 TMPFILE="${NEW_MOM_JSON_FILE}.tmp"
 
-check_input_file_is_readable ${MOM_JSON_FILE}
-check-not-already-jmxified ${MOM_JSON_FILE}
+check_input_file_is_readable 	${MOM_JSON_FILE}
+check-not-already-jmxified 	${MOM_JSON_FILE}
 check_jq_is_available
-come-up-with-new-mom-json-filename
-rip-out-old-junk ${MOM_JSON_FILE} ${TMPFILE}
-update-cmd-section ${TMPFILE} ${NEW_MOM_JSON_FILE}
-add-JAVA_OPTS_PRE-section ${NEW_MOM_JSON_FILE} ${TMPFILE}
-add-portdefinition ${TMPFILE} ${NEW_MOM_JSON_FILE}
-change-id  ${NEW_MOM_JSON_FILE} ${TMPFILE}
-change-dcos-service-name ${TMPFILE} ${NEW_MOM_JSON_FILE}
+get-new-mom-json-filename	${MOM_JSON_FILE}
+rip-out-old-junk 		${MOM_JSON_FILE} 	${TMPFILE}
+update-cmd-section 		${TMPFILE}		${NEW_MOM_JSON_FILE}
+add-JAVA_OPTS_PRE-section 	${NEW_MOM_JSON_FILE} 	${TMPFILE}
+add-portdefinition 		${TMPFILE} 		${NEW_MOM_JSON_FILE}
+change-id  			${NEW_MOM_JSON_FILE}	${TMPFILE}
+change-dcos-service-name 	${TMPFILE} 		${NEW_MOM_JSON_FILE}
 
 echo "DONE: New file is ${NEW_MOM_JSON_FILE}"
