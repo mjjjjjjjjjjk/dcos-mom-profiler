@@ -15,7 +15,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "mkurtis/profbox:v7",
+      "image": "mkurtis/profbox:v4",
       "forcePullImage": false,
       "privileged": false,
       "parameters": []
@@ -23,6 +23,9 @@
   },
   "cpus": 1,
   "disk": 0,
+  "env": {
+    "PASSWORD": "chang3m3"
+  },
   "healthChecks": [
     {
       "gracePeriodSeconds": 300,
